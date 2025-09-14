@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Industry Information and Infrastructure</title>
+  <style>
+    /* Reset and base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
+      color: #2c2c2c;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position: relative;
+      overflow-x: hidden;
+    }
+    h1 {
+      font-weight: 900;
+      font-size: 2.8rem;
+      margin-bottom: 0.5em;
+      color: #fff;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.25);
+      text-align: center;
+      max-width: 900px;
+      width: 100%;
+      position: relative;
+      z-index: 10;
+    }
+    main {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(245, 166, 35, 0.4);
+      max-width: 900px;
+      width: 100%;
+      padding: 30px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: box-shadow 0.3s ease;
+      position: relative;
+      z-index: 10;
+    }
+    main:hover {
+      box-shadow: 0 20px 40px rgba(245, 166, 35, 0.6);
+    }
+
+    /* Decorative images */
+    .decorative-img {
+      position: absolute;
+      opacity: 0.15;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+      max-width: 150px;
+      max-height: 150px;
+    }
+    .decorative-top-left {
+      top: 10px;
+      left: 10px;
+    }
+    .decorative-top-right {
+      top: 10px;
+      right: 10px;
+    }
+    .decorative-bottom-left {
+      bottom: 10px;
+      left: 10px;
+    }
+    .decorative-bottom-right {
+      bottom: 10px;
+      right: 10px;
+    }
+
+    /* Accordion button */
+    button.accordion {
+      background: linear-gradient(135deg, #f8b500, #fceabb);
+      border: none;
+      border-radius: 15px;
+      padding: 18px 25px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #3a1a00;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(248, 181, 0, 0.5);
+      transition: background 0.4s ease, box-shadow 0.3s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      width: 100%;
+    }
+    button.accordion:hover,
+    button.accordion.active {
+      background: linear-gradient(135deg, #fceabb, #f8b500);
+      box-shadow: 0 8px 20px rgba(248, 181, 0, 0.8);
+      color: #4a2600;
+    }
+    button.accordion::after {
+      content: '+';
+      font-size: 1.5rem;
+      font-weight: 900;
+      transition: transform 0.3s ease;
+      color: #3a1a00;
+      margin-left: 10px;
+    }
+    button.accordion.active::after {
+      content: '−';
+      transform: rotate(180deg);
+      color: #4a2600;
+    }
+    button.accordion img.section-img {
+      max-width: 40px;
+      max-height: 40px;
+      margin-left: 20px;
+      vertical-align: middle;
+      position: absolute;
+      right: 70px;
+      top: 50%;
+      transform: translateY(-50%);
+      float: none;
+    }
+    button.accordion {
+      position: relative;
+    }
+
+    /* Panel */
+    .panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #fff;
+      border-radius: 0 0 15px 15px;
+      box-shadow: inset 0 2px 8px rgba(245, 166, 35, 0.15);
+      padding: 0 25px;
+      font-size: 1rem;
+      color: #4a4a4a;
+      position: relative;
+    }
+    .panel.open {
+      padding-top: 15px;
+      padding-bottom: 20px;
+    }
+
+    /* Lists inside panel */
+    ol, ul {
+      padding-left: 1.3em;
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      color: #5a5a5a;
+    }
+    li {
+      margin-bottom: 0.6em;
+    }
+    li strong {
+      color: #f57c00;
+    }
+    em {
+      color: #a05200;
+      font-style: italic;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      font-style: italic;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      font-size: 1.1rem;
+      user-select: none;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      main {
+        padding: 25px 20px;
+      }
+      button.accordion {
+        font-size: 1.1rem;
+        padding: 15px 20px;
+      }
+      button.accordion img.section-img {
+        max-width: 30px;
+        max-height: 30px;
+        right: 20px;
+        margin-left: 10px;
+      }
+      .decorative-img {
+        max-width: 100px;
+        max-height: 100px;
+      }
+    }
+  </style>
+  </head>
+<body>
+  <h1>Industry Information and Infrastructure</h1>
+  <p style="color: #fff; text-shadow: 2px 2px 6px rgba(0,0,0,0.25); font-weight: 600; font-size: 1.2rem; margin-top: -10px; margin-bottom: 20px; text-align: center; max-width: 900px; width: 100%; position: relative; z-index: 10;">Group 9</p>
+
+  <!-- Decorative images positioned around the page -->
+  
+  <img src="design/Arrows.png" alt="Decorative Arrows" class="decorative-img decorative-bottom-right" />
+
+  <main>
+    <section class="section">
+      <button class="accordion" aria-expanded="false" aria-controls="panel1" id="accordion1">
+        What is Industry Information?
+        <img src="design/what is INDUSTRY INFORMATION.png" alt="What is Industry Information" class="section-img" />
+      </button>
+      <div class="panel" id="panel1" role="region" aria-labelledby="accordion1">
+        <p>
+          Industry Information is the collection of data, facts, and knowledge about a specific industry, including its market size, products, services, companies, trends, and challenges, which helps businesses, governments, investors, and researchers make informed decisions.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <button class="accordion" aria-expanded="false" aria-controls="panel2" id="accordion2">
+        Who Uses Industry Information?
+        <img src="design/Who Uses Industry Information.png" alt="Who Uses Industry Information" class="section-img" />
+      </button>
+      <div class="panel" id="panel2" role="region" aria-labelledby="accordion2">
+        <ol>
+          <li><strong>Businesses & Companies</strong><br />
+            They use industry information to know what their competitors are doing, what customers want, and what the latest trends are.<br />
+            <em>Example:</em> A clothing brand checks industry data to see which styles are popular.
+          </li>
+          <li><strong>Government & Policymakers</strong><br />
+            The government uses it to make laws, policies, and programs that support industries.<br />
+            <em>Example:</em> If industry data shows high demand for renewable energy, the government may invest in solar projects.
+          </li>
+          <li><strong>Investors & Entrepreneurs</strong><br />
+            They study industry information to see where to put their money or start a new business.<br />
+            <em>Example:</em> An investor checks IT industry growth before funding a tech startup.
+          </li>
+          <li><strong>Students & Researchers</strong><br />
+            They use it for projects, research papers, and to understand how industries grow.<br />
+            <em>Example:</em> A student writing about the tourism industry uses data on tourist arrivals.
+          </li>
+          <li><strong>Consumers & Public</strong><br />
+            Even ordinary people benefit—by learning about products, prices, and services.<br />
+            <em>Example:</em> A consumer checks food industry reports to see which products are healthier.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <button class="accordion" aria-expanded="false" aria-controls="panel3" id="accordion3">
+        Why is Industry Information Important?
+        <img src="design/Question.png" alt="Question" class="section-img" />
+      </button>
+      <div class="panel" id="panel3" role="region" aria-labelledby="accordion3">
+        <ul>
+          <li>Helps Businesses Grow</li>
+          <li>Guides Government Decisions</li>
+          <li>Creates Jobs</li>
+        </ul>
+        <p>
+          Companies use this info to find new customers, create better products, and stay ahead of the competition. Governments use it to plan for the future, like building new roads or creating policies to help certain industries. When industries grow and thrive, it means more job opportunities for everyone.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <button class="accordion" aria-expanded="false" aria-controls="panel4" id="accordion4">
+        What is Infrastructure?
+        <img src="design/What is Infrastructure.png" alt="What is Infrastructure" class="section-img" />
+      </button>
+      <div class="panel" id="panel4" role="region" aria-labelledby="accordion4">
+        <p>
+          Infrastructure is the basic systems, structures, and facilities that support the daily life of people and the activities of industries. It is like the backbone of a country’s economy and society.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <button class="accordion" aria-expanded="false" aria-controls="panel5" id="accordion5">
+        Types of Infrastructure
+        <img src="design/Types of Infrastructure.png" alt="Types of Infrastructure" class="section-img" />
+      </button>
+      <div class="panel" id="panel5" role="region" aria-labelledby="accordion5">
+        <ul>
+          <li><strong>Transportation:</strong> Roads, bridges, and airports allow people to move from one place to another.</li>
+          <li><strong>Energy:</strong> Power plants and electricity systems give us the energy we need to turn on lights, use appliances, run factories, and charge our devices.</li>
+          <li><strong>Communication:</strong> Internet, phone lines, and cell towers allow us to talk, share information, and stay connected with others anywhere in the world.</li>
+          <li><strong>Water & Sanitation:</strong> Clean water systems and sewage treatment make sure we have safe drinking water and proper waste disposal to keep people healthy and the environment clean.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <button class="accordion" aria-expanded="false" aria-controls="panel6" id="accordion6">
+        Why is Infrastructure Important?
+        <img src="design/infrarast.webp" alt="Infrastructure Importance" class="section-img" />
+      </button>
+      <div class="panel" id="panel6" role="region" aria-labelledby="accordion6">
+        <p>
+          Infrastructure is important because it supports our daily life and makes sure we have what we need to live comfortably. It provides transportation, electricity, water, and communication that help people and businesses function. Good infrastructure also improves health, education, and safety, while helping a country grow and develop.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <button class="accordion" aria-expanded="false" aria-controls="panel7" id="accordion7">
+        The Connection
+        <img src="design/t.webp" alt="Information and Infrastructure Connection" class="section-img" />
+      </button>
+      <div class="panel" id="panel7" role="region" aria-labelledby="accordion7">
+        <p>
+          Information and infrastructure work together, as infrastructure helps us share and use information. The internet, electricity, and roads make it easier for people, schools, and businesses to connect and communicate. Without good infrastructure, information would not reach people fast, but with it, learning, communication, and development become easier.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <button class="accordion" aria-expanded="false" aria-controls="panel8" id="accordion8">
+        What Can We Do?
+        <img src="design/energy.webp" alt="Get Involved" class="section-img" />
+      </button>
+      <div class="panel" id="panel8" role="region" aria-labelledby="accordion8">
+        <ol>
+          <li><strong>Stay Informed:</strong> Always know what’s happening in our local industries and infrastructure so we can understand how it affects our lives.</li>
+          <li><strong>Speak Up:</strong> Share our ideas and concerns with leaders, since our voices can help improve community projects.</li>
+          <li><strong>Get Involved:</strong> Join and support local programs or activities to make a big difference in improving our community’s infrastructure.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <section class="mini-game" style="max-width: 900px; width: 100%; margin: 30px auto; padding: 20px; background: rgba(255, 255, 255, 0.95); border-radius: 15px; box-shadow: 0 12px 30px rgba(245, 166, 35, 0.4); color: #2c2c2c; font-size: 1rem;">
+    <h2 style="font-weight: 700; margin-bottom: 15px; color: #f57c00;">Mini Game: Fill in the Blanks</h2>
+    <p>Test your knowledge on Industry Information and Infrastructure! Each correct answer is worth 2 points (total 10/10).</p>
+    <div class="question">
+      <p>Industry Information is the collection of data, facts, and knowledge about a specific <input type="text" id="q1" placeholder="blank">, including its market size, products, services, companies, trends, and challenges.</p>
+    </div>
+    <div class="question">
+      <p>Infrastructure is the basic systems, structures, and facilities that support the daily life of people and the activities of <input type="text" id="q2" placeholder="blank">.</p>
+    </div>
+    <div class="question">
+      <p>Types of infrastructure include Transportation, Energy, Communication, and <input type="text" id="q3" placeholder="blank"> & Sanitation.</p>
+    </div>
+    <div class="question">
+      <p>Good infrastructure improves health, education, and safety, while helping a country grow and <input type="text" id="q4" placeholder="blank">.</p>
+    </div>
+    <div class="question">
+      <p>Information and infrastructure work together, as infrastructure helps us share and use <input type="text" id="q5" placeholder="blank">.</p>
+    </div>
+    <div style="margin-top: 20px;">
+      <label for="username" style="font-weight: 600; margin-right: 10px;">Enter your name:</label>
+      <input type="text" id="username" placeholder="Your name" style="padding: 5px 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 1rem; width: 200px;">
+    </div>
+    <button id="submit-btn" style="background: linear-gradient(135deg, #f8b500, #fceabb); border: none; border-radius: 10px; padding: 10px 20px; font-size: 1rem; font-weight: 700; color: #3a1a00; cursor: pointer; box-shadow: 0 6px 12px rgba(248, 181, 0, 0.5); transition: background 0.4s ease, box-shadow 0.3s ease; margin-top: 20px;">Submit Answers</button>
+    <div id="score" style="margin-top: 20px; font-weight: bold; color: #f57c00;"></div>
+    <div id="leaderboard" style="margin-top: 30px;">
+      <h3 style="color: #f57c00; font-weight: 700;">Leaderboard</h3>
+      <ol id="leaderboard-list" style="padding-left: 1.2em; color: #2c2c2c;"></ol>
+    </div>
+  </section>
+
+  <section class="credits" style="max-width: 900px; width: 100%; margin: 30px auto; padding: 20px; background: rgba(255, 255, 255, 0.95); border-radius: 15px; box-shadow: 0 12px 30px rgba(245, 166, 35, 0.4); color: #2c2c2c; font-size: 1rem;">
+    <h2 style="font-weight: 700; margin-bottom: 15px; color: #f57c00;">Project Credits</h2>
+    <ul style="list-style-type: disc; padding-left: 1.5em; margin: 0;">
+      <li>ICTMAWD111 - Philosophy Sir.JC</li>
+      <li>Amber Olivar - Research</li>
+      <li>Hitomi Reyes - Presentation</li>
+      <li>Genesis Edrosa - Website</li>
+    </ul>
+  </section>
+
+  <div class="footer">
+    <p>Thank you for visiting!</p>
+  </div>
+
+  <!-- Additional decorative images inside main content -->
+  <img src="design/Question.png" alt="Question Decorative" class="section-img" style="max-width: 80px; opacity: 0.3; margin: 10px auto; display: block;" />
+  <img src="design/wifi.webp" alt="WiFi Decorative" class="section-img" style="max-width: 80px; opacity: 0.3; margin: 10px auto; display: block;" />
+</body>
+</html>
+
+  <script>
+    // Mini Game Logic with Leaderboard
+    const answers = {
+      q1: 'industry',
+      q2: 'industries',
+      q3: 'water',
+      q4: 'develop',
+      q5: 'information'
+    };
+
+    function loadLeaderboard() {
+      const leaderboardList = document.getElementById('leaderboard-list');
+      leaderboardList.innerHTML = '';
+      let leaderboard = JSON.parse(localStorage.getItem('miniGameLeaderboard')) || [];
+      leaderboard.sort((a, b) => b.score - a.score);
+      leaderboard.slice(0, 10).forEach(entry => {
+        const li = document.createElement('li');
+        li.textContent = `${entry.name}: ${entry.score}/10`;
+        leaderboardList.appendChild(li);
+      });
+    }
+
+    function saveScore(name, score) {
+      let leaderboard = JSON.parse(localStorage.getItem('miniGameLeaderboard')) || [];
+      leaderboard.push({ name, score });
+      localStorage.setItem('miniGameLeaderboard', JSON.stringify(leaderboard));
+    }
+
+    document.getElementById('submit-btn').addEventListener('click', function() {
+      let score = 0;
+      for (let i = 1; i <= 5; i++) {
+        const input = document.getElementById('q' + i);
+        const userAnswer = input.value.trim().toLowerCase();
+        const correctAnswer = answers['q' + i].toLowerCase();
+        if (userAnswer === correctAnswer) {
+          score += 2;
+          input.style.borderColor = 'green';
+        } else {
+          input.style.borderColor = 'red';
+        }
+      }
+      const usernameInput = document.getElementById('username');
+      const username = usernameInput.value.trim() || 'Anonymous';
+      saveScore(username, score);
+      document.getElementById('score').textContent = `Your score: ${score}/10`;
+      loadLeaderboard();
+    });
+
+    window.addEventListener('load', () => {
+      loadLeaderboard();
+    });
+  </script>
+
+  <script>
+    // Accordion functionality with smooth max-height transition
+    const accordions = document.querySelectorAll("button.accordion");
+    accordions.forEach((acc) => {
+      acc.addEventListener("click", function () {
+        const isActive = this.classList.contains("active");
+        // Close all panels
+        accordions.forEach(btn => {
+          btn.classList.remove("active");
+          btn.setAttribute("aria-expanded", "false");
+          const panel = btn.nextElementSibling;
+          panel.style.maxHeight = null;
+          panel.classList.remove("open");
+        });
+        if (!isActive) {
+          this.classList.add("active");
+          this.setAttribute("aria-expanded", "true");
+          const panel = this.nextElementSibling;
+          panel.style.maxHeight = panel.scrollHeight + "px";
+          panel.classList.add("open");
+        }
+      });
+    });
+
+    // Optional: Open first accordion by default
+    window.addEventListener('load', () => {
+      if (accordions.length > 0) {
+        accordions[0].click();
+      }
+    });
+  </script>
+</body>
+</html>
